@@ -24,7 +24,9 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/api/**").permitAll()
+                .requestMatchers("/stock/getStocks").permitAll()
+                .requestMatchers("/stock/getTicker").permitAll()
+                .requestMatchers("/currency/test").permitAll()
                 .anyRequest().authenticated()
         );
         return http.build();
