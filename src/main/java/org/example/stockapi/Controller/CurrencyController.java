@@ -18,7 +18,8 @@ public class CurrencyController {
 
     @GetMapping("/test")
     public ResponseEntity<?> testUsd(){
-        String url = "https://api.nbp.pl/api/exchangerates/rates/c/usd/today/";
+        //String url = "https://api.nbp.pl/api/exchangerates/rates/c/usd/today/";
+        String url = "https://api.nbp.pl/api/exchangerates/tables/A/";
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
