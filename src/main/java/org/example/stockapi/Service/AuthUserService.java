@@ -55,6 +55,9 @@ public class AuthUserService {
         if(registerRequest.getUsername().length() < 3){
             return ResponseEntity.badRequest().body("Username must be at least 3 characters long");
         }
+        if(userRepository.existsByUsername(registerRequest.getUsername())){
+            return ResponseEntity.badRequest().body("Username already exists");
+        }
         return ResponseEntity.ok("Validations successful");
     }
 
