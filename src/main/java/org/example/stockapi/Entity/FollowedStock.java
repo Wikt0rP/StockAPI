@@ -23,4 +23,5 @@ public class FollowedStock {
     @JoinColumn(name = "user_id")
     private User user;
 
+
 }
