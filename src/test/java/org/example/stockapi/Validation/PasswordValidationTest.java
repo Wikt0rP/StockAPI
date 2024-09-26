@@ -70,4 +70,20 @@ public class PasswordValidationTest {
         boolean result = passwordValidation.isValidPassword(password, user, 5);
         assertFalse("Password is not longer than 8 characters and passwordStrength is 5/5. Should be invalid", result);
     }
+
+    @Test
+    void testPasswordIsEmpty() {
+        String password = "";
+        String user = "user";
+        boolean result = passwordValidation.isValidPassword(password, user, 5);
+        assertFalse("Password is empty and passwordStrength is 5/5. Should be invalid", result);
+    }
+
+    @Test
+    void testPasswordContainsUsernameButInUpperCase() {
+        String password = "User12345@Aa";
+        String user = "user";
+        boolean result = passwordValidation.isValidPassword(password, user, 5);
+        assertFalse("Password contains username and passwordStrength is 5/5. Should be invalid", result);
+    }
 }
