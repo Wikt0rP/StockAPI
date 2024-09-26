@@ -46,7 +46,7 @@ public class PasswordValidation {
         if(containsSpecialCharacter(password)){
             rank++;
         }
-        if(!password.contains(username)){
+        if(!password.toLowerCase().contains(username.toLowerCase())){
             rank++;
         }
         if(containsDigit(password)){
