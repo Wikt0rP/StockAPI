@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AuthUserService {
     @Autowired
@@ -38,8 +40,13 @@ public class AuthUserService {
 
     }
 
-
-
+    public void processOAuthPostLogin(String email, String givenName, String sub){
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        if(userOptional.isEmpty()){
+            User user = new User(givenName, email, sub, true);
+            userRepository.save(user);
+        }
+    }
 
     //Might change password strength here
     private ResponseEntity<String> registerValidations(RegisterRequest registerRequest){

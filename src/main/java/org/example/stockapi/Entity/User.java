@@ -24,6 +24,7 @@ public class User {
     private String password;
     private String googleId;
     private boolean isActive;
+    private boolean isGoogleUser;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
@@ -38,6 +39,13 @@ public class User {
         this.username = username;
         this.email = email;
         this.password = password;
+        isActive = true;
+    }
+    public User(String username, String email, String googleId, boolean isGoogleUser) {
+        this.username = username;
+        this.email = email;
+        this.googleId = googleId;
+        this.isGoogleUser = isGoogleUser;
         isActive = true;
     }
 

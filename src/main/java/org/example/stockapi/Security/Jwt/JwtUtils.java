@@ -1,6 +1,7 @@
 package org.example.stockapi.Security.Jwt;
 
 import io.jsonwebtoken.*;
+import org.example.stockapi.Security.Impl.CustomOAuth2User;
 import org.example.stockapi.Security.Impl.UserDetailsImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,18 @@ public class JwtUtils {
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(generateKey()).compact();
+    }
+
+    public String generateTokenForGoogle(CustomOAuth2User oAuth2User){
+        return Jwts.builder()
+                .subject(oAuth2User.getEmail())
+                .claim("username", oAuth2User.getName())
+                .claim("email", oAuth2User.getEmail())
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
+                .signWith(generateKey())
+                .compact();
+
     }
 
     public String extractUsername(String token){
