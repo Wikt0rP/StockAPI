@@ -4,6 +4,8 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 application.properties
+credentials.json
+resources
 
 ### STS ###
 .apt_generated
