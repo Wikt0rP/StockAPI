@@ -40,13 +40,7 @@ public class AuthUserService {
 
     }
 
-    public void processOAuthPostLogin(String email, String givenName, String sub){
-        Optional<User> userOptional = userRepository.findByEmail(email);
-        if(userOptional.isEmpty()){
-            User user = new User(givenName, email, sub, true);
-            userRepository.save(user);
-        }
-    }
+
 
     //Might change password strength here
     private ResponseEntity<String> registerValidations(RegisterRequest registerRequest){
