@@ -44,6 +44,9 @@ public class AuthUserService {
         if(registerValidations(registerRequest).getStatusCode().is4xxClientError()){
             return registerValidations(registerRequest);
         }
+        if(userRepository.existsByUsername(registerRequest.getUsername())){
+            return ResponseEntity.badRequest().body("Username already exists");
+        }
 
         User user = new User(registerRequest.getUsername(), registerRequest.getEmail(),
                 passwordEncoder.passwordEncoder().encode(registerRequest.getPassword()));
