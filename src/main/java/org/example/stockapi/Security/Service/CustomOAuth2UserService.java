@@ -1,7 +1,8 @@
 package org.example.stockapi.Security.Service;
 
 import org.example.stockapi.Security.Impl.CustomOAuth2User;
-import org.example.stockapi.Service.AuthUserService;
+
+import org.example.stockapi.Service.OAuthUserService;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -10,9 +11,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
-    private final AuthUserService authUserService;
+    private final OAuthUserService authUserService;
 
-    public CustomOAuth2UserService(AuthUserService authUserService) {
+    public CustomOAuth2UserService(OAuthUserService authUserService) {
         this.authUserService = authUserService;
     }
 

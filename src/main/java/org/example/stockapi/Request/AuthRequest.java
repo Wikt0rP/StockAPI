@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class AuthRequest {
-    private String mail;
+    private String username;
     private String password;
 
 }
