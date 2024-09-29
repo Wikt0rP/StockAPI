@@ -179,4 +179,21 @@ public class AuthUserServiceTest {
         assertEquals("jwtToken", ((JwtResponse) Objects.requireNonNull(response.getBody())).getToken(), "Token should be jwtToken");
     }
 
+    @Test
+    void failedSignInTest() {
+        String username = "username";
+        String password = "Password123@";
+        AuthRequest authRequest = new AuthRequest(username, password);
+
+        when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class)))
+                .thenThrow(new RuntimeException("Authentication failed"));
+
+        ResponseEntity<?> response = authUserService.signIn(authRequest);
+
+        assertTrue("Respond should be unsuccessful", response.getStatusCode().is4xxClientError());
+    }
+
+
+
+
 }
