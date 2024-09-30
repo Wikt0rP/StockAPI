@@ -38,4 +38,8 @@ public class StockController {
         logger.info("Request: " + request);
         return stockService.addStockToFav(followStockRequset, request);
     }
+    @GetMapping("/getFollowedStocks")
+    public ResponseEntity<?> getFollowedStocks(HttpServletRequest request){
+        return stockService.getFollowedStocks(request);
+    }
 }

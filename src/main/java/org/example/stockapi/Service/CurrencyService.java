@@ -2,6 +2,7 @@ package org.example.stockapi.Service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.stockapi.Entity.FollowedCurrency;
+import org.example.stockapi.Entity.FollowedStock;
 import org.example.stockapi.Entity.User;
 import org.example.stockapi.Repository.FollowedCurrencyRepository;
 import org.example.stockapi.Repository.UserRepository;
@@ -12,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.example.stockapi.Security.Jwt.JwtUtils.getJwtFromRequest;
@@ -48,6 +50,29 @@ public class CurrencyService {
             }
         }
     }
+    public ResponseEntity<?> getFollowedCurrencies(HttpServletRequest request){
+        String token = getJwtFromRequest(request);
+        if(token == null || !jwtUtils.validateToken(token)){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized");
+        }else{
+            String username = jwtUtils.extractUsername(token);
+            Optional<User> user = userRepository.findByUsername(username);
+
+            if(user.isPresent()){
+                List<FollowedCurrency> followedCurrencies = followedCurrencyRepository.findByUserId(user.get().getId());
+//                List<String> stocks = new ArrayList<>();
+//                for(FollowedStock followedStock: followedStocks){
+//                    stocks.add(followedStock.getSymbol());
+//                }
+                return ResponseEntity.ok().body(followedCurrencies);
+            } else{
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("User not found");
+            }
+        }
+    }
+
     private boolean addCurrencyToUser(FollowCurrencyRequest followCurrencyRequest, User user){
         if(followedCurrencyRepository.findByUserIdAndSymbol(user.getId(), followCurrencyRequest.getCurrency()).isPresent()){
             return false;

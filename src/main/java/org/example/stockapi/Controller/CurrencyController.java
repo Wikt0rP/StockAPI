@@ -28,4 +28,8 @@ public class CurrencyController {
     public ResponseEntity<?> addCurrencyToFav(@RequestBody FollowCurrencyRequest followCurrencyRequest, HttpServletRequest request){
         return currencyService.addCurrencyToFav(followCurrencyRequest, request);
     }
+    @GetMapping("/getFollowedCurrencies")
+    public ResponseEntity<?> getFollowedCurrencies(HttpServletRequest request){
+        return currencyService.getFollowedCurrencies(request);
+    }
 }

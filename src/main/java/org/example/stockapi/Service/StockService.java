@@ -23,10 +23,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 import static org.example.stockapi.Security.Jwt.JwtUtils.getJwtFromRequest;
 
@@ -60,6 +57,28 @@ public class StockService {
                     return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                             .body("Error adding stock to favorites");
                 }
+            } else{
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("User not found");
+            }
+        }
+    }
+    public ResponseEntity<?> getFollowedStocks(HttpServletRequest request){
+        String token = getJwtFromRequest(request);
+        if(token == null || !jwtUtils.validateToken(token)){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized");
+        }else{
+            String username = jwtUtils.extractUsername(token);
+            Optional<User> user = userRepository.findByUsername(username);
+
+            if(user.isPresent()){
+                List<FollowedStock> followedStocks = followedStockRepository.findByUserId(user.get().getId());
+//                List<String> stocks = new ArrayList<>();
+//                for(FollowedStock followedStock: followedStocks){
+//                    stocks.add(followedStock.getSymbol());
+//                }
+                return ResponseEntity.ok().body(followedStocks);
             } else{
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body("User not found");
