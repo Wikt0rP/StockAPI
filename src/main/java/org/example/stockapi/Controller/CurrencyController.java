@@ -1,10 +1,13 @@
 package org.example.stockapi.Controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import org.example.stockapi.Request.FollowCurrencyRequest;
+import org.example.stockapi.Request.FollowStockRequest;
+import org.example.stockapi.Service.CurrencyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URI;
@@ -12,33 +15,17 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import static com.mysql.cj.conf.PropertyKey.logger;
+
 @RestController
 @RequestMapping("/currency")
 public class CurrencyController {
 
-    @GetMapping("/test")
-    public ResponseEntity<?> testUsd(){
-        //String url = "https://api.nbp.pl/api/exchangerates/rates/c/usd/today/";
-        String url = "https://api.nbp.pl/api/exchangerates/tables/A/";
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .build();
+    @Autowired
+    private CurrencyService currencyService;
 
-        try{
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            if(response.statusCode() == 200){
-                return ResponseEntity.ok().header("Content-Type", "application/json")
-                        .body(response.body());
-            } else{
-                return ResponseEntity.status(response.statusCode())
-                        .body("Error: "+ response.body());
-            }
-
-        } catch (IOException | InterruptedException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error: "+ e.getMessage());
-        }
+    @PostMapping("/followCurrency")
+    public ResponseEntity<?> addCurrencyToFav(@RequestBody FollowCurrencyRequest followCurrencyRequest, HttpServletRequest request){
+        return currencyService.addCurrencyToFav(followCurrencyRequest, request);
     }
 }

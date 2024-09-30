@@ -35,6 +35,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<FollowedStock> followedStocks = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<FollowedCurrency> followedCurrency = new HashSet<>();
+
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;

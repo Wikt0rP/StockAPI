@@ -68,11 +68,11 @@ public class StockService {
     }
 
     private boolean addStockToUser(FollowStockRequest followStockRequest, User user){
-        FollowedStock followedStock = new FollowedStock(followStockRequest.getTicker(), user);
 
         if(followedStockRepository.findByUserIdAndSymbol(user.getId(), followStockRequest.getTicker()).isPresent()){
             return false;
         } else{
+            FollowedStock followedStock = new FollowedStock(followStockRequest.getTicker(), user);
             followedStockRepository.save(followedStock);
             return true;
         }
