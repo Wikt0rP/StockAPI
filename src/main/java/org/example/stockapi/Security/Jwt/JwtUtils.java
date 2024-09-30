@@ -1,6 +1,7 @@
 package org.example.stockapi.Security.Jwt;
 
 import io.jsonwebtoken.*;
+import jakarta.servlet.http.HttpServletRequest;
 import org.example.stockapi.Security.Impl.CustomOAuth2User;
 import org.example.stockapi.Security.Impl.UserDetailsImpl;
 import org.slf4j.Logger;
@@ -85,4 +86,11 @@ public class JwtUtils {
         return new SecretKeySpec(bytes,"HmacSHA256");
     }
 
+    public static String getJwtFromRequest(HttpServletRequest request){
+        String bearerToken = request.getHeader("Authorization");
+        if(bearerToken != null && bearerToken.startsWith("Bearer ")){
+            return bearerToken.substring(7);
+        }
+        return null;
+    }
 }

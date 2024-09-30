@@ -1,5 +1,6 @@
 package org.example.stockapi.Security.Impl;
 
+import jakarta.transaction.Transactional;
 import org.example.stockapi.Entity.User;
 import org.example.stockapi.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,9 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
     @Autowired
     private UserRepository userRepository;
+
     @Override
+    @Transactional
     public UserDetails loadUserByUsername(String username) {
 
         User user = userRepository.findByUsername(username)
