@@ -6,12 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class FollowedStock {
+public class FollowedCurrency {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,11 +25,11 @@ public class FollowedStock {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public FollowedStock(String symbol, User user) {
+    public FollowedCurrency(String symbol, User user) {
         this.symbol = symbol;
         this.user = user;
     }
-    public FollowedStock(String symbol, String fullName, User user) {
+    public FollowedCurrency(String symbol, String fullName, User user) {
         this.symbol = symbol;
         this.fullName = fullName;
         this.user = user;
