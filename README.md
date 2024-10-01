@@ -1,6 +1,5 @@
-API used:
-
+Data sources:
 
 polygon.io
 
-api.nbp.pl
+api.nbp.pl (NBP -> National Bank of Poland)
