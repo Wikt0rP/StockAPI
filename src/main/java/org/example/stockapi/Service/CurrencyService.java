@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import org.example.stockapi.Entity.FollowedCurrency;
-import org.example.stockapi.Entity.FollowedStock;
 import org.example.stockapi.Entity.User;
 import org.example.stockapi.Repository.FollowedCurrencyRepository;
 import org.example.stockapi.Repository.UserRepository;
@@ -26,7 +25,6 @@ import static org.example.stockapi.Security.Jwt.JwtUtils.getJwtFromRequest;
 
 @Service
 public class CurrencyService {
-    private String url = "https://api.nbp.pl/api/exchangerates/tables/A/";
     @Autowired
     private JwtUtils jwtUtils;
     @Autowired
