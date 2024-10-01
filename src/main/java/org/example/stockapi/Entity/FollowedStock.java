@@ -25,10 +25,7 @@ public class FollowedStock {
     @JsonBackReference
     private User user;
 
-    public FollowedStock(String symbol, User user) {
-        this.symbol = symbol;
-        this.user = user;
-    }
+
     public FollowedStock(String symbol, String fullName, User user) {
         this.symbol = symbol;
         this.fullName = fullName;

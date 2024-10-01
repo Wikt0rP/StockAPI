@@ -27,14 +27,14 @@ public class FollowedCurrency {
     @JsonBackReference
     private User user;
 
-    public FollowedCurrency(String symbol, User user) {
-        this.symbol = symbol;
-        this.user = user;
-    }
-    public FollowedCurrency(String symbol, String fullName, User user) {
+    private char currenctTable;
+
+
+    public FollowedCurrency(String symbol, String fullName, User user, char currencyTable) {
         this.symbol = symbol;
         this.fullName = fullName;
         this.user = user;
+        this.currenctTable = currencyTable;
     }
 
 }

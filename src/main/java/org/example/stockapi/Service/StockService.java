@@ -63,7 +63,29 @@ public class StockService {
             }
         }
     }
+
     public ResponseEntity<?> getFollowedStocks(HttpServletRequest request){
+        String token = getJwtFromRequest(request);
+
+        if(token == null || !jwtUtils.validateToken(token)){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body("Unauthorized");
+        }else{
+            String username = jwtUtils.extractUsername(token);
+            Optional<User> user = userRepository.findByUsername(username);
+
+            if(user.isPresent()){
+                followedStocks(user.get());
+                return ResponseEntity.ok().body(followedStocks(user.get()));
+            }else{
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("User not found");
+            }
+
+        }
+    }
+
+    public ResponseEntity<?> getFollowedStocksData(HttpServletRequest request){
         String token = getJwtFromRequest(request);
         if(token == null || !jwtUtils.validateToken(token)){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
@@ -73,17 +95,41 @@ public class StockService {
             Optional<User> user = userRepository.findByUsername(username);
 
             if(user.isPresent()){
-                List<FollowedStock> followedStocks = followedStockRepository.findByUserId(user.get().getId());
-//                List<String> stocks = new ArrayList<>();
-//                for(FollowedStock followedStock: followedStocks){
-//                    stocks.add(followedStock.getSymbol());
-//                }
-                return ResponseEntity.ok().body(followedStocks);
-            } else{
+                List<Object> response = followedStocksApiRequest(followedStocks(user.get()));
+                return ResponseEntity.ok().body(response);
+            }
+            else{
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .body("User not found");
             }
         }
+    }
+
+    private List<FollowedStock> followedStocks(User user){
+        return followedStockRepository.findByUserId(user.getId());
+    }
+    private List<Object> followedStocksApiRequest(List<FollowedStock> followedStocks){
+        List<Object> response = new ArrayList<>();
+
+        for(FollowedStock followedStock: followedStocks){
+            String url = "https://api.polygon.io/v3/reference/tickers/"+followedStock.getSymbol()+"?apiKey=" + apiKey;
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .build();
+
+            try{
+                HttpResponse<String> responseApi = client.send(request, HttpResponse.BodyHandlers.ofString());
+                ObjectMapper mapper = new ObjectMapper();
+                JsonNode node = mapper.readTree(responseApi.body());
+                response.add(node);
+            } catch (IOException | InterruptedException e) {
+                response.add("Can't add stock: " + followedStock.getSymbol());
+            }
+
+        }
+        return response;
+
     }
 
     private boolean addStockToUser(FollowStockRequest followStockRequest, User user){
@@ -91,7 +137,7 @@ public class StockService {
         if(followedStockRepository.findByUserIdAndSymbol(user.getId(), followStockRequest.getTicker()).isPresent()){
             return false;
         } else{
-            FollowedStock followedStock = new FollowedStock(followStockRequest.getTicker(), user);
+            FollowedStock followedStock = new FollowedStock(followStockRequest.getTicker(), followStockRequest.getFullName(), user);
             followedStockRepository.save(followedStock);
             return true;
         }

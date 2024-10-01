@@ -11,4 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class FollowCurrencyRequest {
     String currency;
+    String fullName;
+    char currencyTable;
 }

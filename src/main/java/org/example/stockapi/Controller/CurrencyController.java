@@ -32,4 +32,9 @@ public class CurrencyController {
     public ResponseEntity<?> getFollowedCurrencies(HttpServletRequest request){
         return currencyService.getFollowedCurrencies(request);
     }
+
+    @GetMapping("/getFollowedCurrenciesData")
+    public ResponseEntity<?> getFollowedCurrenciesData(HttpServletRequest request) throws IOException, InterruptedException {
+        return currencyService.getFollowedCurrenciesData(request);
+    }
 }

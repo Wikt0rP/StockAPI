@@ -42,4 +42,9 @@ public class StockController {
     public ResponseEntity<?> getFollowedStocks(HttpServletRequest request){
         return stockService.getFollowedStocks(request);
     }
+
+    @GetMapping("/getFollowedStocksData")
+    public ResponseEntity<?> getFollowedStocksData(HttpServletRequest request){
+        return stockService.getFollowedStocksData(request);
+    }
 }
