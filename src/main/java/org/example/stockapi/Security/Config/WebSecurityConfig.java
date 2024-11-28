@@ -45,6 +45,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/stock/getTicker").permitAll()
                 .requestMatchers("/currency/test").permitAll()
                 .requestMatchers("/auth/google").permitAll()
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/error").permitAll()
                 .anyRequest().authenticated())
                 .exceptionHandling(e -> e.authenticationEntryPoint(authenticationJwtTokenFilter()))
                 .oauth2Login(oauth2 -> oauth2
